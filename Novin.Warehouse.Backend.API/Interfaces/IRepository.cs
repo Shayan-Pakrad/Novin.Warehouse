@@ -13,7 +13,7 @@ namespace Novin.Warehouse.Backend.API.Interfaces
         Task<int> UpdateAsync(TEntity entity);
         Task<int> RemoveAsync(TEntity entity);
         Task<TEntity?> GetByIdAsync(int id);
-        Task<TEntity?> GetByGuidAsync(int id);
+        Task<TEntity?> GetByGuidAsync(string guid);
         Task<int> SaveAsync();
     }
 }
