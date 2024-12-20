@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Novin.Warehouse.Backend.API.Entities.Base;
 
 namespace Novin.Warehouse.Backend.API.Entities
 {
-    public class Transactions
+    public class Transactions : Thing
     {
-        public int Id { get; set; }
         public int ProductId { get; set; }
         public bool Type { get; set; } // true : in, false: out
         public int Quantity { get; set; }
