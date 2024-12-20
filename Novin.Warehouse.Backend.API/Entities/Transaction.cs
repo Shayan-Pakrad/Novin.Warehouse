@@ -6,7 +6,7 @@ using Novin.Warehouse.Backend.API.Entities.Base;
 
 namespace Novin.Warehouse.Backend.API.Entities
 {
-    public class Transactions : Thing
+    public class Transaction : Thing
     {
         public int ProductId { get; set; }
         public bool Type { get; set; } // true : in, false: out
