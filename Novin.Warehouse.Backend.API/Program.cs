@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Novin.Warehouse.Backend.API.DbContexts;
+using Novin.Warehouse.Backend.API.Entities;
 using Novin.Warehouse.Backend.API.Interfaces;
+using Novin.Warehouse.Backend.API.Repositories;
 using Novin.Warehouse.Backend.API.UnitOfWorks;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,10 @@ builder.Services.AddDbContext<WarehouseDB>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Warehouse"));
 });
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IRepository<Product>, GenericRepository<Product>>();
+builder.Services.AddScoped<IRepository<Category>, GenericRepository<Category>>();
+builder.Services.AddScoped<IRepository<Transaction>, GenericRepository<Transaction>>();
+builder.Services.AddScoped<IRepository<Inventory>, GenericRepository<Inventory>>();
 
 var app = builder.Build();
 
