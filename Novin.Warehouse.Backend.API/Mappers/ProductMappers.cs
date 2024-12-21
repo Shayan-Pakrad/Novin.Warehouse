@@ -22,7 +22,7 @@ namespace Novin.Warehouse.Backend.API.Mappers
             };
         }
 
-        public static Product ToProductFromProductDto(this ProductAddOrUpdateDto productDto, int CategoryId)
+        public static Product ToProductFromProductDto(this ProductAddOrUpdateDto productDto, int? CategoryId)
         {
             return new Product
             {
