@@ -7,6 +7,7 @@ namespace Novin.Warehouse.Backend.API.DTOs.Products
 {
     public class ProductAddOrUpdateDto
     {
+        public required string Guid { get; set; }
         public required string Name { get; set; }
         public string? CategoryGuid { get; set; }
         public string? Description { get; set; }
