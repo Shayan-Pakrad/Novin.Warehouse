@@ -23,6 +23,7 @@ builder.Services.AddScoped<IRepository<Category>, GenericRepository<Category>>()
 builder.Services.AddScoped<IRepository<Transaction>, GenericRepository<Transaction>>();
 builder.Services.AddScoped<IRepository<Inventory>, GenericRepository<Inventory>>();
 builder.Services.AddScoped<ProductService, ProductService>();
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -35,5 +36,6 @@ if (app.Environment.IsDevelopment())
 
 // app.UseHttpsRedirection();
 
+app.MapControllers();
 
 app.Run();
