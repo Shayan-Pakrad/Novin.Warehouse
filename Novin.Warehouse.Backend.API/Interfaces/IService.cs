@@ -10,7 +10,7 @@ namespace Novin.Warehouse.Backend.API.Interfaces
     {
         Task<IEnumerable<TEntityDto>> ListAsync();
         Task<int> AddAsync(TAddUpdateDto entity);
-        Task<int> UpdateAsync(TAddUpdateDto entity);
+        Task<int> UpdateAsync(string guid, TAddUpdateDto entity);
         Task<int> RemoveAsync(string guid);
     }
 }
