@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Novin.Warehouse.Backend.API.DbContexts;
+using Novin.Warehouse.Backend.API.Interfaces;
+using Novin.Warehouse.Backend.API.UnitOfWorks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,7 @@ builder.Services.AddDbContext<WarehouseDB>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Warehouse"));
 });
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 
