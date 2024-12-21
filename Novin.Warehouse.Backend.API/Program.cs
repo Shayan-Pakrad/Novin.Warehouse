@@ -3,6 +3,7 @@ using Novin.Warehouse.Backend.API.DbContexts;
 using Novin.Warehouse.Backend.API.Entities;
 using Novin.Warehouse.Backend.API.Interfaces;
 using Novin.Warehouse.Backend.API.Repositories;
+using Novin.Warehouse.Backend.API.Services;
 using Novin.Warehouse.Backend.API.UnitOfWorks;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +22,7 @@ builder.Services.AddScoped<IRepository<Product>, GenericRepository<Product>>();
 builder.Services.AddScoped<IRepository<Category>, GenericRepository<Category>>();
 builder.Services.AddScoped<IRepository<Transaction>, GenericRepository<Transaction>>();
 builder.Services.AddScoped<IRepository<Inventory>, GenericRepository<Inventory>>();
+builder.Services.AddScoped<ProductService, ProductService>();
 
 var app = builder.Build();
 
