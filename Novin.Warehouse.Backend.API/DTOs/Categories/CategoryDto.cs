@@ -8,6 +8,7 @@ namespace Novin.Warehouse.Backend.API.DTOs.Categories
 {
     public class CategoryDto
     {
+        public required string Guid { get; set; }
         public required string Name { get; set; }
         public string? Description { get; set; }
         public ICollection<Product> Products { get; set; } = new List<Product>();

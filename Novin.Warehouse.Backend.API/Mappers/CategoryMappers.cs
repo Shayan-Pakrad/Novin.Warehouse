@@ -13,6 +13,7 @@ namespace Novin.Warehouse.Backend.API.Mappers
         {
             return new CategoryDto
             {
+                Guid = categoryModel.Guid,
                 Name = categoryModel.Name,
                 Description = categoryModel.Description,
                 Products = categoryModel.Products
