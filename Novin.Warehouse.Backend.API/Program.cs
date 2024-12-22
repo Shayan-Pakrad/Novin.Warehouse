@@ -23,6 +23,7 @@ builder.Services.AddScoped<IRepository<Category>, GenericRepository<Category>>()
 builder.Services.AddScoped<IRepository<Transaction>, GenericRepository<Transaction>>();
 builder.Services.AddScoped<IRepository<Inventory>, GenericRepository<Inventory>>();
 builder.Services.AddScoped<ProductService, ProductService>();
+builder.Services.AddScoped<CategoryService, CategoryService>();
 builder.Services.AddControllers();
 
 var app = builder.Build();
