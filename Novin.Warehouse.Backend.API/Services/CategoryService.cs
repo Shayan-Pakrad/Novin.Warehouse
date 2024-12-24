@@ -22,6 +22,7 @@ namespace Novin.Warehouse.Backend.API.Services
         public async Task<IEnumerable<CategoryDto>> ListAsync()
         {
             return await _categories.GetAll()
+                .Include(c => c.Products)
                 .Select(c => c.ToCategoryDto())
                 .ToListAsync();
         }

@@ -16,7 +16,7 @@ namespace Novin.Warehouse.Backend.API.Mappers
             {
                 Guid = productModel.Guid,
                 Name = productModel.Name,
-                Category = productModel.Category,
+                CategoryName = productModel.Category?.Name??null,
                 Description = productModel.Description,
                 MinQuantity = productModel.MinQuantity
             };

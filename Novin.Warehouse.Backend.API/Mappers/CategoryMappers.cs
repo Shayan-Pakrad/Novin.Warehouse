@@ -16,7 +16,7 @@ namespace Novin.Warehouse.Backend.API.Mappers
                 Guid = categoryModel.Guid,
                 Name = categoryModel.Name,
                 Description = categoryModel.Description,
-                Products = categoryModel.Products
+                Products = categoryModel.Products.Select(p => p.Name).ToList()
             };
         }
 
