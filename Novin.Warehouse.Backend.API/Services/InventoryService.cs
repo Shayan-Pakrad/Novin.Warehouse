@@ -25,6 +25,7 @@ namespace Novin.Warehouse.Backend.API.Services
         {
             return await _inventories.GetAll()
                 .Include(m => m.Product)
+                .Include(m => m.Product.Category)
                 .Select(I => I.ToInventoryDto())
                 .ToListAsync();
         }
@@ -54,6 +55,8 @@ namespace Novin.Warehouse.Backend.API.Services
                 dbInventory.Location = entity.Location;
                 dbInventory.ProductId = (await _products.GetByGuidAsync(entity.ProductGuid))?.Id ?? 0;
                 dbInventory.Quantity = entity.Quantity;
+                
+                return await _inventories.UpdateAsync(dbInventory);
             }
             return 0;
         }
