@@ -27,7 +27,6 @@ namespace Novin.Warehouse.Backend.API.Mappers
             {
                 ProductId = productId,
                 Quantity = transactionDto.Quantity,
-                TransactionDate = transactionDto.TransactionDate,
                 Type = transactionDto.Type
             };
         }

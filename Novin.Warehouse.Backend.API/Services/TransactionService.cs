@@ -53,7 +53,6 @@ namespace Novin.Warehouse.Backend.API.Services
             {
                 dbTransaction.ProductId = (await _products.GetByGuidAsync(entity.ProductGuid))?.Id ?? 0;
                 dbTransaction.Quantity = entity.Quantity;
-                dbTransaction.TransactionDate = entity.TransactionDate;
                 dbTransaction.Type = entity.Type;
 
                 return await _transactions.UpdateAsync(dbTransaction);
