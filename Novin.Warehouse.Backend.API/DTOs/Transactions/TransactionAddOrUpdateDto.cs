@@ -7,7 +7,7 @@ namespace Novin.Warehouse.Backend.API.DTOs.Transactions
 {
     public class TransactionAddOrUpdateDto
     {
-        public required string TransactionType { get; set; } // Receive or Dispatch
+        public bool Type { get; set; } // true : Receive, false : Dispatch
         public int Quantity { get; set; }
         public DateTime TransactionDate { get; set; }
         public required string ProductGuid { get; set; }
