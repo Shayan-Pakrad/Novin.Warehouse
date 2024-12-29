@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { PublicSharedComponent } from "./+public/public-shared/public-shared.component";
+import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-root',
@@ -8,5 +9,8 @@ import { PublicSharedComponent } from "./+public/public-shared/public-shared.com
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
+  ngOnInit(): void {
+    initFlowbite();
+  }
 }
