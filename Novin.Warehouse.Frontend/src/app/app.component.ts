@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { PublicSharedComponent } from "./+public/public-shared/public-shared.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [PublicSharedComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
