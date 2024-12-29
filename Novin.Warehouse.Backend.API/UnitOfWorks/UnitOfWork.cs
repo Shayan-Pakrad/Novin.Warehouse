@@ -27,9 +27,9 @@ namespace Novin.Warehouse.Backend.API.UnitOfWorks
 
         public IRepository<TEntity> GetRepository<TEntity>() where TEntity : Thing
         {
-            var result = _sp.GetServices(typeof(IRepository<TEntity>));
+            var result = _sp.GetService<IRepository<TEntity>>();
             if (result != null){
-                return (IRepository<TEntity>)result;
+                return result;
             }
             throw new Exception("Unknown Service");
         }

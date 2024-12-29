@@ -18,7 +18,7 @@ builder.Services.AddDbContext<WarehouseDB>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Warehouse"));
 });
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IRepository<Product>, GenericRepository<Product>>();
+builder.Services.AddScoped<IRepository<Product>, ProductRepository>();
 builder.Services.AddScoped<IRepository<Category>, GenericRepository<Category>>();
 builder.Services.AddScoped<IRepository<Transaction>, GenericRepository<Transaction>>();
 builder.Services.AddScoped<IRepository<Inventory>, GenericRepository<Inventory>>();

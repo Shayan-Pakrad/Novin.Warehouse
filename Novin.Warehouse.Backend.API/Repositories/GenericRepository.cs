@@ -10,7 +10,7 @@ namespace Novin.Warehouse.Backend.API.Repositories
 {
     public class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : Thing
     {
-        private readonly IUnitOfWork _unitOfWork;
+        protected readonly IUnitOfWork _unitOfWork;
         private readonly DbSet<TEntity> _dbSet;
 
         public GenericRepository(IUnitOfWork unitOfWork)
@@ -19,40 +19,40 @@ namespace Novin.Warehouse.Backend.API.Repositories
             _dbSet = _unitOfWork.GetDbSet<TEntity>();
         }
 
-        public IQueryable<TEntity> GetAll()
+        public virtual IQueryable<TEntity> GetAll()
         {
             return _dbSet;
         }
 
-        public async Task<int> AddAsync(TEntity entity)
+        public virtual async Task<int> AddAsync(TEntity entity)
         {
             await _dbSet.AddAsync(entity);
             return await SaveAsync();
         }
 
-        public async Task<int> RemoveAsync(TEntity entity)
+        public virtual async Task<int> RemoveAsync(TEntity entity)
         {
             _dbSet.Remove(entity);
             return await SaveAsync();
         }
 
-        public async Task<int> UpdateAsync(TEntity entity)
+        public virtual async Task<int> UpdateAsync(TEntity entity)
         {
             _dbSet.Update(entity);
             return await SaveAsync();
         }
 
-        public async Task<TEntity?> GetByGuidAsync(string guid)
+        public virtual async Task<TEntity?> GetByGuidAsync(string guid)
         {
             return await _dbSet.FirstOrDefaultAsync(m => m.Guid == guid);
         }
 
-        public async Task<TEntity?> GetByIdAsync(int id)
+        public virtual async Task<TEntity?> GetByIdAsync(int id)
         {
             return await _dbSet.FirstOrDefaultAsync(m => m.Id == id);
         }
 
-        public async Task<int> SaveAsync()
+        public virtual async Task<int> SaveAsync()
         {
             return await _unitOfWork.SaveAsync();
         }
