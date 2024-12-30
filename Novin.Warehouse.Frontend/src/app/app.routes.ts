@@ -3,6 +3,7 @@ import { PublicSharedComponent } from './+public/public-shared/public-shared.com
 import { InventoryComponent } from './+public/+pages/inventory/inventory.component';
 import { TransactionsComponent } from './+public/+pages/transactions/transactions.component';
 import { ProductsComponent } from './+public/+pages/products/products.component';
+import { CategoriesComponent } from './+public/+pages/categories/categories.component';
 
 export const routes: Routes = [
     {
@@ -10,6 +11,7 @@ export const routes: Routes = [
             { path: 'inventory', component: InventoryComponent },
             { path: 'transactions', component: TransactionsComponent},
             { path: 'products', component: ProductsComponent},
+            { path: 'categories', component: CategoriesComponent},
             { path: '', redirectTo: 'home', pathMatch: 'prefix' }
         ]
     },
