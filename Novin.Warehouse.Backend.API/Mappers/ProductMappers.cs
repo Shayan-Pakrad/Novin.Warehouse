@@ -16,6 +16,7 @@ namespace Novin.Warehouse.Backend.API.Mappers
             {
                 Guid = productModel.Guid,
                 Name = productModel.Name,
+                Price = productModel.Price,
                 CategoryName = productModel.Category?.Name??null,
                 Description = productModel.Description,
                 MinQuantity = productModel.MinQuantity
@@ -29,7 +30,8 @@ namespace Novin.Warehouse.Backend.API.Mappers
                 CategoryId = CategoryId,
                 Description = productDto.Description,
                 MinQuantity = productDto.MinQuantity,
-                Name = productDto.Name
+                Name = productDto.Name,
+                Price = productDto.Price
             };
         }
     }
