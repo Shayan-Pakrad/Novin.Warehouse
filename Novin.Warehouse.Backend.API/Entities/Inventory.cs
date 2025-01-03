@@ -10,7 +10,6 @@ namespace Novin.Warehouse.Backend.API.Entities
     {
         public int ProductId { get; set; }
         public int Quantity { get; set; }
-        public string? Location { get; set; }
         
         public Product Product { get; set; } = null!;
     }

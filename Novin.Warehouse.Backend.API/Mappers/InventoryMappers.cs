@@ -15,7 +15,6 @@ namespace Novin.Warehouse.Backend.API.Mappers
             {
                 Guid = inventoryModel.Guid,
                 Product = inventoryModel.Product.ToProductDto(),
-                Location = inventoryModel.Location,
                 Quantity = inventoryModel.Quantity
             };
         }
@@ -24,7 +23,6 @@ namespace Novin.Warehouse.Backend.API.Mappers
         {
             return new Inventory
             {
-                Location = inventoryDto.Location,
                 ProductId = productId,
                 Quantity = inventoryDto.Quantity
             };

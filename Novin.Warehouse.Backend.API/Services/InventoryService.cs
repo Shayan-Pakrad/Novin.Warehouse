@@ -52,7 +52,6 @@ namespace Novin.Warehouse.Backend.API.Services
             var dbInventory = await _inventories.GetByGuidAsync(guid);
             if (dbInventory != null)
             {
-                dbInventory.Location = entity.Location;
                 dbInventory.ProductId = (await _products.GetByGuidAsync(entity.ProductGuid))?.Id ?? 0;
                 dbInventory.Quantity = entity.Quantity;
                 

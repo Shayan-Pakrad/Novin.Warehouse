@@ -10,8 +10,6 @@ namespace Novin.Warehouse.Backend.API.DTOs.Inventories
     {
         public required string Guid { get; set; }
         public required ProductDto Product { get; set; }
-        public int Quantity { get; set; }
-        public string? Location { get; set; }
-        
+        public int Quantity { get; set; }        
     }
 }
