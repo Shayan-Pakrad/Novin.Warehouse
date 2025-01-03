@@ -12,7 +12,7 @@ export const routes: Routes = [
             { path: 'transactions', component: TransactionsComponent},
             { path: 'products', component: ProductsComponent},
             { path: 'categories', component: CategoriesComponent},
-            { path: '', redirectTo: 'home', pathMatch: 'prefix' }
+            { path: '', redirectTo: 'inventory', pathMatch: 'prefix' }
         ]
     },
     { path: '', redirectTo: 'public', pathMatch: 'full' }

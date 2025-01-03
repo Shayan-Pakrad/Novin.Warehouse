@@ -1,1 +1,12 @@
-<p>inventory works!</p>
+<h2>Production List</h2>
+<ul>
+    <li *ngFor="let item of inventories">
+        productName : <strong>{{ item.product.name }}</strong> - {{ item.product.description }}
+        <br />
+        Minimum Quantity: {{ item.product.minQuantity }}
+        <span *ngIf="item.product.categoryName"> (Category: {{ item.product.categoryName }})</span>
+        <br />
+        Current Quantity: {{ item.quantity }}
+        <span *ngIf="item.location"> (Location: {{ item.location }})</span>
+    </li>
+</ul>
