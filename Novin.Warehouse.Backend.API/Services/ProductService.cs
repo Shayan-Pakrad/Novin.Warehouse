@@ -64,6 +64,7 @@ namespace Novin.Warehouse.Backend.API.Services
                 }
                 dbProduct.Description = entity.Description;
                 dbProduct.MinQuantity = entity.MinQuantity;
+                dbProduct.Price = entity.Price;
                 dbProduct.Name = entity.Name;
                 return await _products.UpdateAsync(dbProduct);
             }
