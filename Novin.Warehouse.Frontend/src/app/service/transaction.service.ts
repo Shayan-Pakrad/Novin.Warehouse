@@ -19,4 +19,8 @@ export class TransactionService {
   addTransaction(newTransaction: CreateUpdateTransactionDTO): Observable<Transaction> {
     return this.http.post<Transaction>(`${this.apiUrl}/add`, newTransaction);
   }
+
+  updateTransaction(transactionGuid: string, updatedTransaction: CreateUpdateTransactionDTO): Observable<Transaction> {
+    return this.http.put<Transaction>(`${this.apiUrl}/update/${transactionGuid}`, updatedTransaction);
+  }
 }
