@@ -23,4 +23,8 @@ export class TransactionService {
   updateTransaction(transactionGuid: string, updatedTransaction: CreateUpdateTransactionDTO): Observable<Transaction> {
     return this.http.put<Transaction>(`${this.apiUrl}/update/${transactionGuid}`, updatedTransaction);
   }
+
+  deleteTransaction(transactionGuid: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/remove/${transactionGuid}`);
+  }
 }
