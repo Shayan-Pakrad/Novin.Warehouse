@@ -79,5 +79,21 @@ export class ProductsComponent implements OnInit {
         }
       })
   }
+
+  removeProduct() {
+    this.productService.deleteProduct(this.selectedProductGuid)
+      .subscribe({
+        next: () => {
+          console.log('Product deleted successfully.');
+          alert('Product deleted successfully');
+          this.selectedProductGuid = '';
+          this.refreshProducts(); 
+        },
+        error: (err) => {
+          console.error('Error deleting product:', err);
+          alert('Failed to delete product. Please try again.');
+        }
+      })
+  }
   
 }
