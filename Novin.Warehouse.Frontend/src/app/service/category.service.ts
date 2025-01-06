@@ -23,4 +23,8 @@ export class CategoryService {
   updateCategory(categoryGuid: string, updateCategory: CreateUpdateCategoryDTO): Observable<Category> {
     return this.http.put<Category>(`${this.apiUrl}/update/${categoryGuid}`, updateCategory);
   }
+
+  deleteCategory(categoryGuid: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/remove/${categoryGuid}`);
+  }
 }
