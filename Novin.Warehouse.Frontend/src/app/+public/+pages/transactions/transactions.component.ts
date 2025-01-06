@@ -23,6 +23,14 @@ export class TransactionsComponent implements OnInit{
     productGuid: '',
   }
 
+  updatedTransaction: CreateUpdateTransactionDTO = {
+    type: true,
+    quantity: 0,
+    productGuid: '',
+  }
+
+  selectedTransactionGuid: string = '';
+
   constructor(private transactionService: TransactionService
     , private productService: ProductService) { }
   
@@ -41,7 +49,6 @@ export class TransactionsComponent implements OnInit{
   }
 
   addTransaction() {
-    console.log(this.newTransaction);
     this.transactionService.addTransaction(this.newTransaction)
       .subscribe({
         next: (response) => {
@@ -49,6 +56,24 @@ export class TransactionsComponent implements OnInit{
           alert('transaction added successfully');
           this.newTransaction = { productGuid: '', quantity: 0, type: true };
           this.refreshTransactions();
+        }
+      })
+  }
+
+  updateTransaction() {
+    console.log(this.updateTransaction);
+    this.transactionService.updateTransaction(this.selectedTransactionGuid, this.updatedTransaction)
+      .subscribe({
+        next: (response) => {
+          console.log('Transaction updated successfully:', response);
+          alert('Transaction updated successfully');
+          this.refreshTransactions(); 
+          this.updatedTransaction = { productGuid: '', quantity: 0, type: true };
+          this.selectedTransactionGuid = '';
+        },
+        error: (err) => {
+          console.error('Error updating transaction:', err);
+          alert('Failed to update transaction. Please try again.');
         }
       })
   }
