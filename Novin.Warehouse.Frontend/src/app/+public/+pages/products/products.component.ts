@@ -19,11 +19,21 @@ export class ProductsComponent implements OnInit {
 
   newProduct: CreateUpdateProductDTO = {
     name: '',
-    price: -1,
+    price: 0,
     categoryGuid: '',
     description: '',
     minQuantity: 0,
   }
+
+  updatedProduct: CreateUpdateProductDTO = {
+    name: '',
+    price: 0,
+    categoryGuid: '',
+    description: '',
+    minQuantity: 0,
+  }
+
+  selectedProductGuid: string = '';
 
   constructor(private productService: ProductService
     , private categoryService: CategoryService) { }
@@ -42,15 +52,32 @@ export class ProductsComponent implements OnInit {
   }
 
   addProduct() {
-    console.log(this.newProduct);
     this.productService.addProduct(this.newProduct).subscribe({
       next: (response) => {
         console.log('Product added successfully:', response);
         alert('product added successfully');
-        this.newProduct = { name: '', description: '', categoryGuid: '', minQuantity: 0, price: -1 };
+        this.newProduct = { name: '', description: '', categoryGuid: '', minQuantity: 0, price: 0 };
         this.refreshProducts();
       }
     })
+  }
+
+  updateProduct() {
+    console.log(this.updatedProduct)
+    this.productService.updateProduct(this.selectedProductGuid, this.updatedProduct)
+      .subscribe({
+        next: (response) => {
+          console.log('Product updated successfully:', response);
+          alert('Product updated successfully');
+          this.refreshProducts(); 
+          this.updatedProduct = { name: '', description: '', categoryGuid: '', minQuantity: 0, price: 0 };
+          this.selectedProductGuid = '';
+        },
+        error: (err) => {
+          console.error('Error updating product:', err);
+          alert('Failed to update product. Please try again.');
+        }
+      })
   }
   
 }
