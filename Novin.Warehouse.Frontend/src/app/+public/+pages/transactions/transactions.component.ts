@@ -61,7 +61,6 @@ export class TransactionsComponent implements OnInit{
   }
 
   updateTransaction() {
-    console.log(this.updateTransaction);
     this.transactionService.updateTransaction(this.selectedTransactionGuid, this.updatedTransaction)
       .subscribe({
         next: (response) => {
@@ -74,6 +73,22 @@ export class TransactionsComponent implements OnInit{
         error: (err) => {
           console.error('Error updating transaction:', err);
           alert('Failed to update transaction. Please try again.');
+        }
+      })
+  }
+
+  removeTransaction() {
+    this.transactionService.deleteTransaction(this.selectedTransactionGuid)
+      .subscribe({
+        next: () => {
+          console.log('Transaction deleted successfully.');
+          alert('Transaction deleted successfully');
+          this.selectedTransactionGuid = '';
+          this.refreshTransactions(); 
+        },
+        error: (err) => {
+          console.error('Error deleting transaction:', err);
+          alert('Failed to delete transaction. Please try again.');
         }
       })
   }
