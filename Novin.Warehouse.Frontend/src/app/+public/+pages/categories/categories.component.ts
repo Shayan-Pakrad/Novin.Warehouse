@@ -18,6 +18,13 @@ export class CategoriesComponent implements OnInit {
     description: '',
   };
 
+  updatedCategory: CreateUpdateCategoryDTO = {
+    name: '',
+    description: '',
+  }
+
+  selectedCategoryGuid: string = '';
+
 
   categories: Category[] = [];
 
@@ -46,5 +53,22 @@ export class CategoriesComponent implements OnInit {
         alert('Failed to add category. Please try again.');
       },
     })
+  }
+
+  updateCategory() {
+    this.categoryService.updateCategory(this.selectedCategoryGuid, this.updatedCategory)
+      .subscribe({
+        next: (response) => {
+          console.log('Category updated successfully:', response);
+          alert('Category updated successfully');
+          this.refreshCategories(); 
+          this.updatedCategory = { name: '', description: '' };
+          this.selectedCategoryGuid = '';
+        },
+        error: (err) => {
+          console.error('Error updating category:', err);
+          alert('Failed to update category. Please try again.');
+        }
+      })
   }
 }
