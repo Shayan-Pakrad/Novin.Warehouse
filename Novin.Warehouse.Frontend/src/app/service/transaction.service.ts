@@ -2,16 +2,21 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Transaction } from '../model/transaction';
+import { CreateUpdateTransactionDTO } from '../model/transaction-add-update.dto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionService {
-  private apiUrl = 'http://localhost:5166/api/TransactionApi/list'
+  private apiUrl = 'http://localhost:5166/api/TransactionApi'
 
   constructor(private http: HttpClient) { }
 
   getTransactions(): Observable<Transaction[]> {
-    return this.http.get<Transaction[]>(this.apiUrl);
+    return this.http.get<Transaction[]>(`${this.apiUrl}/list`);
+  }
+
+  addTransaction(newTransaction: CreateUpdateTransactionDTO): Observable<Transaction> {
+    return this.http.post<Transaction>(`${this.apiUrl}/add`, newTransaction);
   }
 }
