@@ -71,4 +71,20 @@ export class CategoriesComponent implements OnInit {
         }
       })
   }
+
+  removeCategory() {
+    this.categoryService.deleteCategory(this.selectedCategoryGuid)
+    .subscribe({
+      next: () => {
+        console.log('Category deleted successfully.');
+        alert('Category deleted successfully');
+        this.selectedCategoryGuid = '';
+        this.refreshCategories(); 
+      },
+      error: (err) => {
+        console.error('Error deleting category:', err);
+        alert('Failed to delete category. Please try again.');
+      }
+    });
+  }
 }
