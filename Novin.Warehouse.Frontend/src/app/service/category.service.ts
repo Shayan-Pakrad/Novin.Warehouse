@@ -13,10 +13,14 @@ export class CategoryService {
   constructor(private http: HttpClient) { }
 
   getCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>(this.apiUrl + '/list');
+    return this.http.get<Category[]>(`${this.apiUrl}/list`);
   }
 
   addCategory(newCategory: CreateUpdateCategoryDTO): Observable<Category> {
-    return this.http.post<Category>(this.apiUrl + '/add', newCategory);
+    return this.http.post<Category>(`${this.apiUrl}/add`, newCategory);
+  }
+
+  updateCategory(categoryGuid: string, updateCategory: CreateUpdateCategoryDTO): Observable<Category> {
+    return this.http.put<Category>(`${this.apiUrl}/update/${categoryGuid}`, updateCategory);
   }
 }
