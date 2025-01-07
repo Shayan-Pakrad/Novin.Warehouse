@@ -17,14 +17,8 @@ namespace Novin.Warehouse.Backend.API.Repositories
         {
             var inventoryRepository = (InventoryRepository)_unitOfWork.GetRepository<Inventory>();
 
-            await base.AddAsync(transaction);
-
-            var inventory = await inventoryRepository.GetByProductIdAsync(transaction.ProductId);
-
-            if (inventory == null) {
-                throw new Exception("There is no inventory for this product");
-            }
-
+            var inventory = await inventoryRepository.GetByProductIdAsync(transaction.ProductId) ?? throw new Exception("There is no inventory for this product");
+            
             if (transaction.Type == true) // receive
             {
                 inventory.Quantity += transaction.Quantity;
@@ -33,6 +27,12 @@ namespace Novin.Warehouse.Backend.API.Repositories
                 inventory.Quantity -= transaction.Quantity;
             }
 
+            if (inventory.Quantity < 0)
+            {
+                throw new Exception("Don't have much quantity in inventory");
+            }
+
+            await base.AddAsync(transaction);
             return await inventoryRepository.UpdateAsync(inventory);
         }
     }
