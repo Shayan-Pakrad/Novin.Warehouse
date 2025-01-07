@@ -56,6 +56,10 @@ export class TransactionsComponent implements OnInit{
           alert('transaction added successfully');
           this.newTransaction = { productGuid: '', quantity: 0, type: true };
           this.refreshTransactions();
+        },
+        error: (err) => {
+          console.error('Error adding transaction:', err);
+          alert('Failed to add transaction. Please try again.');
         }
       })
   }
