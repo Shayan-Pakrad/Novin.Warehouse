@@ -31,9 +31,9 @@ namespace Novin.Warehouse.Backend.API.Services
 
         public async Task<int> AddAsync(ProductAddOrUpdateDto entity)
         {
-            if (entity.Price < 0) 
+            if (entity.Price < 0 || entity.MinQuantity < 0) 
             {
-                throw new ArgumentException("Product price cannot be negative.", nameof(entity)); 
+                throw new ArgumentException("Product parameters cannot be negative.", nameof(entity)); 
             }
 
             if (entity.CategoryGuid != null)
@@ -61,9 +61,9 @@ namespace Novin.Warehouse.Backend.API.Services
 
         public async Task<int> UpdateAsync(string guid, ProductAddOrUpdateDto entity)
         {
-            if (entity.Price < 0) 
+            if (entity.Price < 0 || entity.MinQuantity < 0) 
             {
-                throw new ArgumentException("Product price cannot be negative.", nameof(entity)); 
+                throw new ArgumentException("Product parameters cannot be negative.", nameof(entity)); 
             }
             
             var dbProduct = await _products.GetByGuidAsync(guid);
