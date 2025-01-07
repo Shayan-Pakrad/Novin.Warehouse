@@ -11,7 +11,7 @@ namespace Novin.Warehouse.Backend.API.Repositories
     public class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : Thing
     {
         protected readonly IUnitOfWork _unitOfWork;
-        private readonly DbSet<TEntity> _dbSet;
+        protected readonly DbSet<TEntity> _dbSet;
 
         public GenericRepository(IUnitOfWork unitOfWork)
         {
