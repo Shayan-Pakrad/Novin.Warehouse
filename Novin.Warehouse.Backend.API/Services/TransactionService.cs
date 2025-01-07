@@ -31,6 +31,11 @@ namespace Novin.Warehouse.Backend.API.Services
 
         public async Task<int> AddAsync(TransactionAddOrUpdateDto entity)
         {
+            if (entity.Quantity < 0) 
+            {
+                throw new ArgumentException("Transaction quantity cannot be negative.", nameof(entity)); 
+            }
+
             var productId = (await _products.GetByGuidAsync(entity.ProductGuid))?.Id ?? 0;
             var t = entity.ToTransactionFromTransactionDto(productId);
             return await _transactions.AddAsync(t);
@@ -48,6 +53,11 @@ namespace Novin.Warehouse.Backend.API.Services
 
         public async Task<int> UpdateAsync(string guid, TransactionAddOrUpdateDto entity)
         {
+            if (entity.Quantity < 0) 
+            {
+                throw new ArgumentException("Transaction quantity cannot be negative.", nameof(entity)); 
+            }
+            
             var dbTransaction = await _transactions.GetByGuidAsync(guid);
             if (dbTransaction != null)
             {
