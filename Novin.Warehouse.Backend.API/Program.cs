@@ -30,8 +30,8 @@ builder.Services.AddDbContext<WarehouseDB>(options =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IRepository<Product>, ProductRepository>();
 builder.Services.AddScoped<IRepository<Category>, GenericRepository<Category>>();
-builder.Services.AddScoped<IRepository<Transaction>, GenericRepository<Transaction>>();
-builder.Services.AddScoped<IRepository<Inventory>, GenericRepository<Inventory>>();
+builder.Services.AddScoped<IRepository<Transaction>, TransactionRepository>();
+builder.Services.AddScoped<IRepository<Inventory>, InventoryRepository>();
 builder.Services.AddScoped<ProductService, ProductService>();
 builder.Services.AddScoped<CategoryService, CategoryService>();
 builder.Services.AddScoped<InventoryService, InventoryService>();
