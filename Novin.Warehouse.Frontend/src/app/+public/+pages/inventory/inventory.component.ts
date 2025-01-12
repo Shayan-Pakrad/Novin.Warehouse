@@ -18,6 +18,7 @@ import { ProductService } from '../../../service/product.service';
 export class InventoryComponent implements OnInit {
   inventories: Inventory[] = [];
   products: Product[] = [];
+  busy: boolean = false;
 
   newTransaction: CreateUpdateTransactionDTO = {
     type: true,
@@ -37,12 +38,15 @@ export class InventoryComponent implements OnInit {
   }
 
   refreshInventories() {
+    this.busy = true;
     this.inventoryService.getInventories().subscribe((data) => {
       this.inventories = data;
+      this.busy = false;
     })
   }
 
   addTransaction() {
+    this.busy = true;
     this.transactionService.addTransaction(this.newTransaction)
       .subscribe({
         next: (response) => {
@@ -50,10 +54,12 @@ export class InventoryComponent implements OnInit {
           alert('transaction added successfully');
           this.newTransaction = { productGuid: '', quantity: 0, type: true };
           this.refreshInventories();
+          this.busy = false;
         },
         error: (err) => {
           console.error('Error adding transaction:', err);
           alert('Failed to add transaction. Please try again.');
+          this.busy = false;
         }
       })
   }
