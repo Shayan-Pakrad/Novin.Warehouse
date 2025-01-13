@@ -37,9 +37,15 @@ builder.Services.AddScoped<CategoryService, CategoryService>();
 builder.Services.AddScoped<InventoryService, InventoryService>();
 builder.Services.AddScoped<TransactionService, TransactionService>();
 builder.Services.AddControllers();
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
+builder.Services.AddIdentityApiEndpoints<WarehouseUser>()
+    .AddEntityFrameworkStores<WarehouseDB>();
 
 var app = builder.Build();
 
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseCors("AllowAngularApp");
 
 // Configure the HTTP request pipeline.
@@ -50,6 +56,8 @@ if (app.Environment.IsDevelopment())
 }
 
 // app.UseHttpsRedirection();
+
+// app.MapIdentityApi<WarehouseUser>();
 
 app.MapControllers();
 
