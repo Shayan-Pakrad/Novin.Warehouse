@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { LoginResponseDto } from '../../model/login-response.dto';
-import { LoginService } from '../../service/login.service';
+import { AuthService } from '../../service/auth.service';
 import { User } from '../../model/user.model';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs'
@@ -16,10 +16,10 @@ export class PublicSharedComponent implements OnInit, OnDestroy {
   isLoggedIn: boolean = false;
   private userSubject: Subscription | null = null;
 
-  constructor(private loginService: LoginService) { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
-    this.userSubject = this.loginService.user.subscribe((user: User) => {
+    this.userSubject = this.authService.user.subscribe((user: User) => {
       this.isLoggedIn = user ? true : false;
     })
   }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { LoginRequestDto } from '../../../../model/login-request.dto';
 import { FormsModule } from '@angular/forms';
-import { LoginService } from '../../../../service/login.service';
+import { AuthService } from '../../../../service/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -16,10 +16,10 @@ export class LoginComponent {
     password: ''
   }
 
-  constructor(private loginService: LoginService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   sendLoginRequest() {
-    this.loginService.login(this.loginRequest).subscribe({
+    this.authService.login(this.loginRequest).subscribe({
       next: (response) => {
         console.log('Logged in successfully: ', response);
         this.loginRequest = { username: '', password: '' };

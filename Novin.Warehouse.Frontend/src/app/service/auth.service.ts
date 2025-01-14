@@ -8,7 +8,7 @@ import { User } from '../model/user.model';
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
+export class AuthService {
   private apiUrl = 'http://localhost:5166/api/SecurityApi/login';
   user = new Subject<User>();
   
