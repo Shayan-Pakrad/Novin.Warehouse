@@ -33,7 +33,7 @@ namespace Novin.Warehouse.Backend.API.Controllers
 
             if (!result.Succeeded)
             {
-                return TypedResults.Problem(result.ToString(), statusCode: StatusCodes.Status200OK);
+                return TypedResults.Problem(result.ToString(), statusCode: StatusCodes.Status401Unauthorized);
             }
 
             return TypedResults.Empty;
