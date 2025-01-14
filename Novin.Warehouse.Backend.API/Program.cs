@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Novin.Warehouse.Backend.API.DbContexts;
 using Novin.Warehouse.Backend.API.Entities;
 using Novin.Warehouse.Backend.API.Interfaces;
+using Novin.Warehouse.Backend.API.Middlewares;
 using Novin.Warehouse.Backend.API.Repositories;
 using Novin.Warehouse.Backend.API.Services;
 using Novin.Warehouse.Backend.API.UnitOfWorks;
@@ -39,7 +40,14 @@ builder.Services.AddScoped<TransactionService, TransactionService>();
 builder.Services.AddControllers();
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
-builder.Services.AddIdentityApiEndpoints<WarehouseUser>()
+builder.Services.AddIdentityApiEndpoints<WarehouseUser>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequiredLength = 4;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+})
     .AddEntityFrameworkStores<WarehouseDB>();
 
 var app = builder.Build();
@@ -58,6 +66,11 @@ if (app.Environment.IsDevelopment())
 // app.UseHttpsRedirection();
 
 // app.MapIdentityApi<WarehouseUser>();
+
+using (var scope = app.Services.CreateScope())
+{
+    await SecuritySeed.FirstRun(scope.ServiceProvider);
+}
 
 app.MapControllers();
 
