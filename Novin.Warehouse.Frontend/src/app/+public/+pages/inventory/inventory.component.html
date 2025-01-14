@@ -107,7 +107,7 @@
                 </div>
             </div>
             <div class="overflow-x-auto">
-                @if (inventories.length === 0) {
+                @if (inventories.length === 0 && !busy) {
                     <div class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
                         <span class="font-medium">Info alert!</span> You have no products yet, add some product to see them in the inventory
                     </div>
