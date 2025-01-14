@@ -26,8 +26,8 @@ namespace Novin.Warehouse.Backend.API.Controllers
         public async Task<Results<Ok<AccessTokenResponse>, EmptyHttpResult, ProblemHttpResult>> Login(LoginRequestDto loginRequest)
         {
             var signInManager = _sp.GetRequiredService<SignInManager<WarehouseUser>>();
-
- 
+            signInManager.AuthenticationScheme = IdentityConstants.BearerScheme;
+            
             var result = await signInManager.PasswordSignInAsync(loginRequest.Username, loginRequest.Password, false, false);
 
 
