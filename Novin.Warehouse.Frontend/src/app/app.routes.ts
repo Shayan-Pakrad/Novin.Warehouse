@@ -4,6 +4,7 @@ import { InventoryComponent } from './+public/+pages/inventory/inventory.compone
 import { TransactionsComponent } from './+public/+pages/transactions/transactions.component';
 import { ProductsComponent } from './+public/+pages/products/products.component';
 import { CategoriesComponent } from './+public/+pages/categories/categories.component';
+import { LoginComponent } from './+public/+security/+pages/login/login.component';
 
 export const routes: Routes = [
     {
@@ -12,6 +13,7 @@ export const routes: Routes = [
             { path: 'transactions', component: TransactionsComponent},
             { path: 'products', component: ProductsComponent},
             { path: 'categories', component: CategoriesComponent},
+            { path: 'login', component: LoginComponent},
             { path: '', redirectTo: 'inventory', pathMatch: 'prefix' }
         ]
     },
