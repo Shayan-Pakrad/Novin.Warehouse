@@ -21,6 +21,23 @@ export class AuthService {
         const expiresIn = new Date(expiresInTs);
         const user = new User(loginRequest.username, res.accessToken, res.refreshToken, expiresIn);
         this.user.next(user);
+        localStorage.setItem('user', JSON.stringify(user));
       }));
   }
+
+  autoLogin(){
+    const userString = localStorage.getItem('user'); 
+    if (!userString) {
+        return; 
+    }
+    const user = JSON.parse(userString); 
+
+    const loggedUser = new User(user.username, user._accessToken, user._refreshToken, user._expiresIn);
+
+    if(loggedUser.token){
+        this.user.next(loggedUser);
+    }
+}
+
+
 }
