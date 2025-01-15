@@ -19,7 +19,7 @@ export class PublicSharedComponent implements OnInit, OnDestroy {
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
-    this.userSubject = this.authService.user.subscribe((user: User) => {
+    this.userSubject = this.authService.user.subscribe((user: User|null) => {
       this.isLoggedIn = user ? true : false;
     })
   }
