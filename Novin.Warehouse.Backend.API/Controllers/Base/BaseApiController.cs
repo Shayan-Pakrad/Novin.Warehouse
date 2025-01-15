@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Novin.Warehouse.Backend.API.Entities.Base;
 using Novin.Warehouse.Backend.API.Interfaces;
@@ -28,6 +29,7 @@ namespace Novin.Warehouse.Backend.API.Controllers.Base
         }
 
         [HttpPost("add")]
+        [Authorize(Policy = "RequireAdminRole")]
         public virtual async Task<int> AddAsync(TAddUpdateDto entity)
         {
             return await _service.AddAsync(entity);
