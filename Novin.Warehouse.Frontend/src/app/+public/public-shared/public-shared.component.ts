@@ -31,4 +31,8 @@ export class PublicSharedComponent implements OnInit, OnDestroy {
     }
   }
 
+  logout() {
+    this.authService.logout();
+    this.isLoggedIn = false
+  }
 }

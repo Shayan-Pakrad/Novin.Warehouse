@@ -1,9 +1,10 @@
 import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
 import { LoginResponseDto } from '../model/login-response.dto';
 import { LoginRequestDto } from '../model/login-request.dto';
 import { User } from '../model/user.model';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class AuthService {
   private apiUrl = 'http://localhost:5166/api/SecurityApi/login';
   user = new BehaviorSubject<User|null>(null);
   
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   login(loginRequest: LoginRequestDto): Observable<LoginResponseDto> {
     return this.http.post<LoginResponseDto>(this.apiUrl, loginRequest)
@@ -25,7 +26,7 @@ export class AuthService {
       }));
   }
 
-  autoLogin(){
+  autoLogin() {
     const userString = localStorage.getItem('user'); 
     if (!userString) {
         return; 
@@ -37,7 +38,13 @@ export class AuthService {
     if(loggedUser.token){
         this.user.next(loggedUser);
     }
-}
+  }
+  
+  logout() {
+    this.user.next(null);
+    this.router.navigate(['/public/login']);
+    localStorage.removeItem('user');
+  }
 
 
 }
