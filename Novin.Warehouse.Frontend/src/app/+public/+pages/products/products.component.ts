@@ -6,10 +6,11 @@ import { CategoryService } from '../../../service/category.service';
 import { Category } from '../../../model/category';
 import { CreateUpdateProductDTO } from '../../../model/product-add-update.dto';
 import { FormsModule } from '@angular/forms';
+import { ReinitializeFlowbiteDirective } from '../../../directives/reinitializeFlowbite.directive';
 
 @Component({
   selector: 'app-products',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReinitializeFlowbiteDirective],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css'
 })

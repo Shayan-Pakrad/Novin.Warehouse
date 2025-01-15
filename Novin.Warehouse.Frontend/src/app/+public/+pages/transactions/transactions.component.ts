@@ -6,10 +6,11 @@ import { CreateUpdateTransactionDTO } from '../../../model/transaction-add-updat
 import { Product } from '../../../model/product';
 import { ProductService } from '../../../service/product.service';
 import { FormsModule } from '@angular/forms';
+import { ReinitializeFlowbiteDirective } from '../../../directives/reinitializeFlowbite.directive';
 
 @Component({
   selector: 'app-transactions',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReinitializeFlowbiteDirective],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css'
 })

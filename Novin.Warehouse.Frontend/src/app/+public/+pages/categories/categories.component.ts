@@ -4,10 +4,11 @@ import { Category } from '../../../model/category';
 import { CategoryService } from '../../../service/category.service';
 import { FormsModule } from '@angular/forms';
 import { CreateUpdateCategoryDTO } from '../../../model/category-add-update.dto';
+import { ReinitializeFlowbiteDirective } from '../../../directives/reinitializeFlowbite.directive';
 
 @Component({
   selector: 'app-categories',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReinitializeFlowbiteDirective],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.css'
 })

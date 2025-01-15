@@ -118,7 +118,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of categories" class="border-b dark:border-gray-700">
+                        <tr *ngFor="let item of categories" class="border-b dark:border-gray-700" appReinitializeFlowbite>
                             <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ item.name.toUpperCase() }}</th>
                             <td class="px-4 py-3">{{ item.description }}</td>
                             <td class="px-4 py-3 flex items-center justify-end">

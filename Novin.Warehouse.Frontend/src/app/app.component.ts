@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { PublicSharedComponent } from "./+public/public-shared/public-shared.component";
 import { initFlowbite } from 'flowbite';
 import { AuthService } from './service/auth.service';
@@ -12,8 +12,15 @@ import { AuthService } from './service/auth.service';
 })
 export class AppComponent implements OnInit{
   authService: AuthService = inject(AuthService);
+  constructor(private router: Router) { }
   ngOnInit(): void {
     initFlowbite();
     this.authService.autoLogin();
+
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        initFlowbite();
+      }
+    })
   }
 }
