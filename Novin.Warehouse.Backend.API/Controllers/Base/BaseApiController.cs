@@ -36,12 +36,14 @@ namespace Novin.Warehouse.Backend.API.Controllers.Base
         }
 
         [HttpPut("update/{guid}")]
+        [Authorize(Policy = "RequireAdminRole")]
         public virtual async Task<int> UpdateAsync(TAddUpdateDto entity, string guid)
         {
             return await _service.UpdateAsync(guid, entity);
         }
 
         [HttpDelete("remove/{guid}")]
+        [Authorize(Policy = "RequireAdminRole")]
         public virtual async Task<int> RemoveAsync(string guid)
         {
             return await _service.RemoveAsync(guid);
