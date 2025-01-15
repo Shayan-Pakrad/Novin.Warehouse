@@ -6,13 +6,40 @@ using Novin.Warehouse.Backend.API.Middlewares;
 using Novin.Warehouse.Backend.API.Repositories;
 using Novin.Warehouse.Backend.API.Services;
 using Novin.Warehouse.Backend.API.UnitOfWorks;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter your token in the text input below.\nExample: 'abc123'",
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 builder.Services.AddCors(options =>
 {
@@ -39,7 +66,11 @@ builder.Services.AddScoped<InventoryService, InventoryService>();
 builder.Services.AddScoped<TransactionService, TransactionService>();
 builder.Services.AddControllers();
 builder.Services.AddAuthentication();
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireAdminRole", policy =>
+        policy.RequireAuthenticatedUser());
+});
 builder.Services.AddIdentityApiEndpoints<WarehouseUser>(options =>
 {
     options.Password.RequireDigit = false;
