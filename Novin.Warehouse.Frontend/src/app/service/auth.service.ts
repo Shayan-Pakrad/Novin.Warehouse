@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
 import { LoginResponseDto } from '../model/login-response.dto';
 import { LoginRequestDto } from '../model/login-request.dto';
 import { User } from '../model/user.model';
@@ -10,7 +10,7 @@ import { User } from '../model/user.model';
 })
 export class AuthService {
   private apiUrl = 'http://localhost:5166/api/SecurityApi/login';
-  user = new Subject<User>();
+  user = new BehaviorSubject<User|null>(null);
   
   constructor(private http: HttpClient) { }
 
