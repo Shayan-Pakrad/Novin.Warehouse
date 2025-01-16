@@ -128,13 +128,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let item of inventories" class="border-b dark:border-gray-700">
-                                    <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ item.product.name.toUpperCase() }}</th>
-                                    <td class="px-4 py-3">{{ item.quantity }}</td>
-                                    <td class="px-4 py-3">{{ item.product.minQuantity }}</td>
-                                    <td class="px-4 py-3 max-w-[12rem] truncate">{{ item.product.categoryName?.toUpperCase() ?? '-' }}</td>
-                                    <td class="px-4 py-3">${{ item.product.price }}</td>
-                                    <td class="px-4 py-3 flex items-center justify-end">
+                                <tr *ngFor="let item of inventories" class="border-b dark:border-gray-700" [ngClass]="{'bg-red-300': item.quantity < item.product.minQuantity}">
+                                    <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white rounded-l">{{ item.product.name.toUpperCase() }}</th>
+                                    <td class="px-4 py-3 text-gray-700">{{ item.quantity }}</td>
+                                    <td class="px-4 py-3 text-gray-700">{{ item.product.minQuantity }}</td>
+                                    <td class="px-4 py-3 max-w-[12rem] truncate text-gray-700">{{ item.product.categoryName?.toUpperCase() ?? '-' }}</td>
+                                    <td class="px-4 py-3 text-gray-700">${{ item.product.price }}</td>
+                                    <td class="px-4 py-3 flex items-center justify-end rounded-r-md">
                                         
                                     </td>
                                 </tr>
