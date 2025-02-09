@@ -7,37 +7,12 @@ using Novin.Warehouse.Backend.API.Repositories;
 using Novin.Warehouse.Backend.API.Services;
 using Novin.Warehouse.Backend.API.UnitOfWorks;
 using Microsoft.OpenApi.Models;
+using Novin.Warehouse.Backend.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
-{
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "Enter your token in the text input below.\nExample: 'abc123'",
-    });
-
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
-    });
-});
+builder.Services.AddSwaggerWithJwt();
 
 builder.Services.AddCors(options =>
 {
