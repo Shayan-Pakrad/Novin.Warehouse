@@ -8,7 +8,7 @@ namespace Novin.Warehouse.Backend.API.Extensions
 {
     public static class SwaggerExtensions
     {
-        public static void AddSwaggerWithJwt(this IServiceCollection services)
+        public static IServiceCollection AddSwaggerWithJwt(this IServiceCollection services)
         {
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(options =>
@@ -38,6 +38,8 @@ namespace Novin.Warehouse.Backend.API.Extensions
                     }
                 });
             });
+
+            return services;
         }
     }
 }

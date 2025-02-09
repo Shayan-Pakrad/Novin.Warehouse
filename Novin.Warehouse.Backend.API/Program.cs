@@ -3,21 +3,17 @@ using Novin.Warehouse.Backend.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSwaggerWithJwt();
-builder.Services.AddCorsPolicy();
-builder.Services.AddCustomServices(builder.Configuration);
+builder.Services
+    .AddSwaggerWithJwt()
+    .AddCustomCors()
+    .AddCustomServices(builder.Configuration)
+    .AddAuthenticationAndAuthorization()
+    .AddIdentityConfiguration()
+    .AddControllers();
 
 var app = builder.Build();
 
-app.UseAuthentication();
-app.UseAuthorization();
-app.UseCors("AllowAngularApp");
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.ConfigureMiddleware();
 
 using (var scope = app.Services.CreateScope())
 {

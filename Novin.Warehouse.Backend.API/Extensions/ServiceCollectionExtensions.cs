@@ -12,9 +12,9 @@ using Novin.Warehouse.Backend.API.UnitOfWorks;
 
 namespace Novin.Warehouse.Backend.API.Extensions
 {
-    public static class ServiceExtensions
+    public static class ServiceCollectionExtensions
     {
-        public static void AddCustomServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddCustomServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<WarehouseDB>(options =>
             {
@@ -30,25 +30,8 @@ namespace Novin.Warehouse.Backend.API.Extensions
             services.AddScoped<CategoryService, CategoryService>();
             services.AddScoped<InventoryService, InventoryService>();
             services.AddScoped<TransactionService, TransactionService>();
-
-            services.AddControllers();
-
-            services.AddAuthentication();
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("RequireAdminRole", policy =>
-                    policy.RequireAuthenticatedUser());
-            });
-            
-            services.AddIdentityApiEndpoints<WarehouseUser>(options =>
-            {
-                options.Password.RequireDigit = false;
-                options.Password.RequiredLength = 4;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-            })
-                .AddEntityFrameworkStores<WarehouseDB>();
+        
+            return services;
         }
     }
 }

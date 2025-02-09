@@ -7,7 +7,7 @@ namespace Novin.Warehouse.Backend.API.Extensions
 {
     public static class CorsExtensions
     {
-        public static void AddCorsPolicy(this IServiceCollection services)
+        public static IServiceCollection AddCustomCors(this IServiceCollection services)
         {
             services.AddCors(options =>
             {
@@ -18,6 +18,8 @@ namespace Novin.Warehouse.Backend.API.Extensions
                         .AllowAnyMethod();
                 });
             });
+
+            return services;
         }
     }
 }
