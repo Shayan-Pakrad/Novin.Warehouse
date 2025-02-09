@@ -16,6 +16,8 @@ namespace Novin.Warehouse.Backend.API.Middlewares
             var db = sp.GetRequiredService<WarehouseDB>();
             var signInManager = sp.GetRequiredService<SignInManager<WarehouseUser>>();
 
+            db.Database.Migrate();
+
             var adminRole = await db.Roles.FirstOrDefaultAsync(m => m.Name == "Admin");
             if (adminRole == null)
             {
