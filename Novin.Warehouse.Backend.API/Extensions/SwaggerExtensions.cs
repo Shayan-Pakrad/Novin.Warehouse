@@ -10,6 +10,7 @@ namespace Novin.Warehouse.Backend.API.Extensions
     {
         public static void AddSwaggerWithJwt(this IServiceCollection services)
         {
+            services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(options =>
             {
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

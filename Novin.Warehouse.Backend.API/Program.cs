@@ -11,7 +11,6 @@ using Novin.Warehouse.Backend.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerWithJwt();
 builder.Services.AddCorsPolicy();
 builder.Services.AddCustomServices(builder.Configuration);
