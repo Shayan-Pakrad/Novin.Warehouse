@@ -1,12 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using Novin.Warehouse.Backend.API.DbContexts;
-using Novin.Warehouse.Backend.API.Entities;
-using Novin.Warehouse.Backend.API.Interfaces;
 using Novin.Warehouse.Backend.API.Middlewares;
-using Novin.Warehouse.Backend.API.Repositories;
-using Novin.Warehouse.Backend.API.Services;
-using Novin.Warehouse.Backend.API.UnitOfWorks;
-using Microsoft.OpenApi.Models;
 using Novin.Warehouse.Backend.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
