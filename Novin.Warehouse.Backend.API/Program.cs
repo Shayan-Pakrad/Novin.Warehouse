@@ -13,38 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerWithJwt();
-
 builder.Services.AddCorsPolicy();
-
-builder.Services.AddDbContext<WarehouseDB>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Warehouse"));
-});
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IRepository<Product>, ProductRepository>();
-builder.Services.AddScoped<IRepository<Category>, GenericRepository<Category>>();
-builder.Services.AddScoped<IRepository<Transaction>, TransactionRepository>();
-builder.Services.AddScoped<IRepository<Inventory>, InventoryRepository>();
-builder.Services.AddScoped<ProductService, ProductService>();
-builder.Services.AddScoped<CategoryService, CategoryService>();
-builder.Services.AddScoped<InventoryService, InventoryService>();
-builder.Services.AddScoped<TransactionService, TransactionService>();
-builder.Services.AddControllers();
-builder.Services.AddAuthentication();
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("RequireAdminRole", policy =>
-        policy.RequireAuthenticatedUser());
-});
-builder.Services.AddIdentityApiEndpoints<WarehouseUser>(options =>
-{
-    options.Password.RequireDigit = false;
-    options.Password.RequiredLength = 4;
-    options.Password.RequireLowercase = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireNonAlphanumeric = false;
-})
-    .AddEntityFrameworkStores<WarehouseDB>();
+builder.Services.AddCustomServices(builder.Configuration);
 
 var app = builder.Build();
 
