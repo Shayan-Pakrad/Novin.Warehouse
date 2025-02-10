@@ -24,24 +24,20 @@ namespace Novin.Warehouse.Backend.API.Repositories
             return _dbSet;
         }
 
-        public virtual async Task<int> AddAsync(TEntity entity)
+        public virtual async Task<TEntity> AddAsync(TEntity entity)
         {
             await _dbSet.AddAsync(entity);
-            return await SaveAsync();
+            await SaveAsync();
+            return entity;
         }
 
-        public virtual async Task<int> RemoveAsync(TEntity entity)
-        {
-            _dbSet.Remove(entity);
-            return await SaveAsync();
-        }
-
-        public virtual async Task<int> UpdateAsync(TEntity entity)
+        public virtual async Task<TEntity> UpdateAsync(TEntity entity)
         {
             _dbSet.Update(entity);
-            return await SaveAsync();
+            await SaveAsync();
+            return entity;
         }
-
+ 
         public virtual async Task<TEntity?> GetByGuidAsync(string guid)
         {
             return await _dbSet.FirstOrDefaultAsync(m => m.Guid == guid);
@@ -50,6 +46,12 @@ namespace Novin.Warehouse.Backend.API.Repositories
         public virtual async Task<TEntity?> GetByIdAsync(int id)
         {
             return await _dbSet.FirstOrDefaultAsync(m => m.Id == id);
+        }
+        
+        public virtual async Task<int> RemoveAsync(TEntity entity)
+        {
+            _dbSet.Remove(entity);
+            return await SaveAsync();
         }
 
         public virtual async Task<int> SaveAsync()

@@ -13,7 +13,7 @@ namespace Novin.Warehouse.Backend.API.Repositories
         {
         }
 
-        public override async Task<int> AddAsync(Transaction transaction)
+        public override async Task<Transaction> AddAsync(Transaction transaction)
         {
             var inventoryRepository = (InventoryRepository)_unitOfWork.GetRepository<Inventory>();
 
@@ -33,7 +33,9 @@ namespace Novin.Warehouse.Backend.API.Repositories
             }
 
             await base.AddAsync(transaction);
-            return await inventoryRepository.UpdateAsync(inventory);
+            await inventoryRepository.UpdateAsync(inventory);
+
+            return transaction;
         }
 
         public override async Task<int> RemoveAsync(Transaction transaction)
@@ -55,8 +57,8 @@ namespace Novin.Warehouse.Backend.API.Repositories
                 throw new Exception("Don't have much quantity in inventory");
             }
 
-            await base.RemoveAsync(transaction);
-            return await inventoryRepository.UpdateAsync(inventory);
+            await inventoryRepository.UpdateAsync(inventory);
+            return await base.RemoveAsync(transaction);
         }
     }
 }

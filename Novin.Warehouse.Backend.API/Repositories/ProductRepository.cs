@@ -13,7 +13,7 @@ namespace Novin.Warehouse.Backend.API.Repositories
         {
         }
 
-        public override async Task<int> AddAsync(Product product)
+        public override async Task<Product> AddAsync(Product product)
         {
             var inventoryRepository = _unitOfWork.GetRepository<Inventory>();
 
@@ -25,8 +25,9 @@ namespace Novin.Warehouse.Backend.API.Repositories
                 Quantity = 0,
             };
 
-            return await inventoryRepository.AddAsync(newInventory);
+            await inventoryRepository.AddAsync(newInventory);
 
+            return product;
         }
 
     }
