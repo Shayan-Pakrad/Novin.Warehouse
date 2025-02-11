@@ -23,30 +23,39 @@ namespace Novin.Warehouse.Backend.API.Controllers.Base
         }
 
         [HttpGet("list")]
-        public virtual async Task<IResult> ListAsync()
+        public virtual async Task<ActionResult<IEnumerable<TEntity>>> ListAsync()
         {
-            return Results.Ok(await _service.ListAsync());
+            return Ok(await _service.ListAsync());
         }
 
         [HttpPost("add")]
         [Authorize(Policy = "RequireAdminRole")]
-        public virtual async Task<int> AddAsync(TAddUpdateDto entity)
+        public virtual async Task<ActionResult<TEntityDto>> AddAsync(TAddUpdateDto entity)
         {
-            return await _service.AddAsync(entity);
+            var createdEntity = await _service.AddAsync(entity);
+            return Created("", createdEntity);
         }
 
         [HttpPut("update/{guid}")]
         [Authorize(Policy = "RequireAdminRole")]
-        public virtual async Task<int> UpdateAsync(TAddUpdateDto entity, string guid)
+        public virtual async Task<ActionResult<TEntityDto>> UpdateAsync(TAddUpdateDto entity, string guid)
         {
-            return await _service.UpdateAsync(guid, entity);
+            var updatedEntity = await _service.UpdateAsync(guid, entity);
+            if (updatedEntity == null)
+                return NotFound();
+
+            return Ok(updatedEntity);
         }
 
         [HttpDelete("remove/{guid}")]
         [Authorize(Policy = "RequireAdminRole")]
-        public virtual async Task<int> RemoveAsync(string guid)
+        public virtual async Task<ActionResult> RemoveAsync(string guid)
         {
-            return await _service.RemoveAsync(guid);
+            var deletedRows = await _service.RemoveAsync(guid);
+            if (deletedRows == 0)
+                return NotFound();
+            
+            return Ok(deletedRows);
         }
     }
 }
