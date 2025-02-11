@@ -30,15 +30,24 @@ namespace Novin.Warehouse.Backend.API.Services
                 .ToListAsync();
         }
 
-        public async Task<int> AddAsync(InventoryAddOrUpdateDto entity)
+        public async Task<InventoryDto> AddAsync(InventoryAddOrUpdateDto entity)
         {
-            var productId = (await _products.GetByGuidAsync(entity.ProductGuid))?.Id ?? 0;
-            var i = entity.ToInventoryFromInventoryDto(productId);
-            return await _inventories.AddAsync(i);
+            if (entity.Quantity < 0)
+                throw new ArgumentOutOfRangeException(nameof(entity.Quantity), "Quantity cannot be negative.");
+
+            var product = await _products.GetByGuidAsync(entity.ProductGuid)
+                ?? throw new InvalidOperationException($"Product with GUID {entity.ProductGuid} not found");
+            
+            var inventory = entity.ToInventoryFromInventoryDto(product.Id);
+            var createdInventory = await _inventories.AddAsync(inventory);
+            return createdInventory.ToInventoryDto();
         }
 
         public async Task<int> RemoveAsync(string guid)
         {
+            if (string.IsNullOrWhiteSpace(guid))
+                throw new ArgumentException("GUID cannot be null or empty.", nameof(guid));
+
             var dbInventory = await _inventories.GetByGuidAsync(guid);
             if (dbInventory != null)
             {
@@ -47,17 +56,33 @@ namespace Novin.Warehouse.Backend.API.Services
             return 0;
         }
 
-        public async Task<int> UpdateAsync(string guid, InventoryAddOrUpdateDto entity)
+        public async Task<InventoryDto> UpdateAsync(string guid, InventoryAddOrUpdateDto entity)
         {
-            var dbInventory = await _inventories.GetByGuidAsync(guid);
-            if (dbInventory != null)
-            {
-                dbInventory.ProductId = (await _products.GetByGuidAsync(entity.ProductGuid))?.Id ?? 0;
-                dbInventory.Quantity = entity.Quantity;
-                
-                return await _inventories.UpdateAsync(dbInventory);
-            }
-            return 0;
+            if (string.IsNullOrWhiteSpace(guid))
+                throw new ArgumentException("GUID cannot be null or empty.", nameof(guid));
+
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
+            if (entity.Quantity < 0)
+                throw new ArgumentOutOfRangeException(nameof(entity.Quantity), "Quantity cannot be negative.");
+
+            var dbInventory = await _inventories.GetByGuidAsync(guid)
+                ?? throw new InvalidOperationException($"Inventory with GUID {guid} not found.");
+
+
+            var product = await _products.GetByGuidAsync(entity.ProductGuid)
+                ?? throw new InvalidOperationException($"Product with GUID {guid} not found");
+            
+
+            dbInventory.ProductId = product.Id;
+            dbInventory.Quantity = entity.Quantity;
+
+            var updatedInventory = await _inventories.UpdateAsync(dbInventory);
+            return updatedInventory.ToInventoryDto();
         }
     }
 }
