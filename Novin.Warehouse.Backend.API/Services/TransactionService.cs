@@ -29,20 +29,24 @@ namespace Novin.Warehouse.Backend.API.Services
                 .ToListAsync();
         }
 
-        public async Task<int> AddAsync(TransactionAddOrUpdateDto entity)
+        public async Task<TransactionDto> AddAsync(TransactionAddOrUpdateDto entity)
         {
-            if (entity.Quantity < 0) 
-            {
-                throw new ArgumentException("Transaction quantity cannot be negative.", nameof(entity)); 
-            }
+            if (entity.Quantity < 0)
+                throw new ArgumentOutOfRangeException(nameof(entity.Quantity), "Quantity cannot be negative.");
 
-            var productId = (await _products.GetByGuidAsync(entity.ProductGuid))?.Id ?? 0;
-            var t = entity.ToTransactionFromTransactionDto(productId);
-            return await _transactions.AddAsync(t);
+            var product = await _products.GetByGuidAsync(entity.ProductGuid)
+                ?? throw new InvalidOperationException($"Product with GUID {entity.ProductGuid} not found.");
+
+            var transaction = entity.ToTransactionFromTransactionDto(product.Id);
+            var createdTransaction = await _transactions.AddAsync(transaction);
+            return createdTransaction.ToTransactionDto();          
         }
 
         public async Task<int> RemoveAsync(string guid)
         {
+            if (string.IsNullOrWhiteSpace(guid))
+                throw new ArgumentException("GUID cannot be null or empty.", nameof(guid));
+
             var dbTransaction = await _transactions.GetByGuidAsync(guid);
             if (dbTransaction != null)
             {
@@ -51,23 +55,28 @@ namespace Novin.Warehouse.Backend.API.Services
             return 0;
         }
 
-        public async Task<int> UpdateAsync(string guid, TransactionAddOrUpdateDto entity)
+        public async Task<TransactionDto> UpdateAsync(string guid, TransactionAddOrUpdateDto entity)
         {
-            if (entity.Quantity < 0) 
-            {
-                throw new ArgumentException("Transaction quantity cannot be negative.", nameof(entity)); 
-            }
-            
-            var dbTransaction = await _transactions.GetByGuidAsync(guid);
-            if (dbTransaction != null)
-            {
-                dbTransaction.ProductId = (await _products.GetByGuidAsync(entity.ProductGuid))?.Id ?? 0;
-                dbTransaction.Quantity = entity.Quantity;
-                dbTransaction.Type = entity.Type;
+            if (string.IsNullOrWhiteSpace(guid))
+                throw new ArgumentException("GUID cannot be null or empty.", nameof(guid));
 
-                return await _transactions.UpdateAsync(dbTransaction);
-            }
-            return 0;
+            if (entity.Quantity < 0)
+                throw new ArgumentOutOfRangeException(nameof(entity.Quantity), "Quantity cannot be null.");
+            
+            var dbTransaction = await _transactions.GetByGuidAsync(guid)
+                ?? throw new InvalidOperationException($"Transaction with GUID {guid} not found.");
+
+            
+            var product = await _products.GetByGuidAsync(entity.ProductGuid)
+                ?? throw new InvalidOperationException($"Product with GUID {guid} not found");
+            
+            dbTransaction.ProductId = product.Id;
+            dbTransaction.Quantity = entity.Quantity;
+            dbTransaction.Type = entity.Type;
+
+            var updatedTransaction = await _transactions.UpdateAsync(dbTransaction);
+
+            return updatedTransaction.ToTransactionDto();
         }
     }
 }
