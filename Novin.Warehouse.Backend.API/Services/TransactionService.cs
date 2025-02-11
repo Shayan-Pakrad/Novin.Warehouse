@@ -60,6 +60,9 @@ namespace Novin.Warehouse.Backend.API.Services
             if (string.IsNullOrWhiteSpace(guid))
                 throw new ArgumentException("GUID cannot be null or empty.", nameof(guid));
 
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
             if (entity.Quantity < 0)
                 throw new ArgumentOutOfRangeException(nameof(entity.Quantity), "Quantity cannot be null.");
             
