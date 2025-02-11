@@ -29,56 +29,73 @@ namespace Novin.Warehouse.Backend.API.Services
                 .ToListAsync();
         }
 
-        public async Task<int> AddAsync(ProductAddOrUpdateDto entity)
+        public async Task<ProductDto> AddAsync(ProductAddOrUpdateDto entity)
         {
-            if (entity.Price < 0 || entity.MinQuantity < 0) 
-            {
-                throw new ArgumentException("Product parameters cannot be negative.", nameof(entity)); 
-            }
 
-            if (entity.CategoryGuid != null)
+            if (entity.Price < 0)
+                throw new ArgumentOutOfRangeException(nameof(entity.Price), "Price cannot be negative.");
+
+            if (entity.MinQuantity < 0)
+                throw new ArgumentOutOfRangeException(nameof(entity.MinQuantity), "Minimum quantity cannot be negative.");
+
+            int? categoryId = null;
+            if (!string.IsNullOrWhiteSpace(entity.CategoryGuid))
             {
-                var CategoryId = (await _categories.GetByGuidAsync(entity.CategoryGuid))?.Id ?? 0;
-                var p = entity.ToProductFromProductDto(CategoryId);
-                return await _products.AddAsync(p);
+                var category = await _categories.GetByGuidAsync(entity.CategoryGuid) 
+                    ?? throw new InvalidOperationException($"Category with GUID {entity.CategoryGuid} not found.");
+                categoryId = category.Id;
             }
-            else
-            {
-                var p = entity.ToProductFromProductDto(null);
-                return await _products.AddAsync(p);
-            }
+            var product = entity.ToProductFromProductDto(categoryId);
+            var createdProduct = await _products.AddAsync(product);
+
+            return createdProduct.ToProductDto();
         }
 
         public async Task<int> RemoveAsync(string guid)
         {
+            if (string.IsNullOrWhiteSpace(guid))
+                throw new ArgumentException("GUID cannot be null or empty.", nameof(guid));
+
             var dbProduct = await _products.GetByGuidAsync(guid);
             if (dbProduct != null)
-            {
                 return await _products.RemoveAsync(dbProduct);
-            }
+            
             return 0;
         }
 
-        public async Task<int> UpdateAsync(string guid, ProductAddOrUpdateDto entity)
+        public async Task<ProductDto> UpdateAsync(string guid, ProductAddOrUpdateDto entity)
         {
-            if (entity.Price < 0 || entity.MinQuantity < 0) 
+            if (string.IsNullOrWhiteSpace(guid))
+                throw new ArgumentException("GUID cannot be null or empty.", nameof(guid));
+
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
+            if (entity.Price < 0)
+                throw new ArgumentOutOfRangeException(nameof(entity.Price), "Price cannot be negative");
+
+            if (entity.MinQuantity < 0)
+                throw new ArgumentOutOfRangeException(nameof(entity.MinQuantity), "Minimum quantity cannot be null");
+
+            var dbProduct = await _products.GetByGuidAsync(guid)
+                ?? throw new InvalidOperationException($"Product with GUID {guid} not found.");
+
+            if (!string.IsNullOrWhiteSpace(entity.CategoryGuid))
             {
-                throw new ArgumentException("Product parameters cannot be negative.", nameof(entity)); 
+                var category = await _categories.GetByGuidAsync(entity.CategoryGuid)
+                    ?? throw new InvalidOperationException($"Category with GUID {entity.CategoryGuid} not found.");
+
+                dbProduct.CategoryId = category.Id;
             }
-            
-            var dbProduct = await _products.GetByGuidAsync(guid);
-            if (dbProduct != null)
-            {
-                if (entity.CategoryGuid != null){
-                    dbProduct.CategoryId = (await _categories.GetByGuidAsync(entity.CategoryGuid))?.Id??0;
-                }
-                dbProduct.Description = entity.Description;
-                dbProduct.MinQuantity = entity.MinQuantity;
-                dbProduct.Price = entity.Price;
-                dbProduct.Name = entity.Name;
-                return await _products.UpdateAsync(dbProduct);
-            }
-            return 0;
+
+            dbProduct.Name = entity.Name;
+            dbProduct.Description = entity.Description;
+            dbProduct.MinQuantity = entity.MinQuantity;
+            dbProduct.Price = entity.Price;
+
+            var updatedProduct = await _products.UpdateAsync(dbProduct);
+
+            return updatedProduct.ToProductDto();
         }
     }
 }
