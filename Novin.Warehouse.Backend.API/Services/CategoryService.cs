@@ -27,14 +27,18 @@ namespace Novin.Warehouse.Backend.API.Services
                 .ToListAsync();
         }
 
-        public async Task<int> AddAsync(CategoryAddOrUpdateDto entity)
+        public async Task<CategoryDto> AddAsync(CategoryAddOrUpdateDto entity)
         {
-            var c = entity.ToCategoryFromCategoryDto();
-            return await _categories.AddAsync(c);
+            var category = entity.ToCategoryFromCategoryDto();
+            var createdCategory = await _categories.AddAsync(category);
+            return createdCategory.ToCategoryDto();
         }
 
         public async Task<int> RemoveAsync(string guid)
         {
+            if (string.IsNullOrWhiteSpace(guid))
+                throw new ArgumentException("GUID cannot be null or empty.", nameof(guid));
+
             var dbCategory = await _categories.GetByGuidAsync(guid);
             if (dbCategory != null)
             {
@@ -43,16 +47,23 @@ namespace Novin.Warehouse.Backend.API.Services
             return 0;
         }
 
-        public async Task<int> UpdateAsync(string guid, CategoryAddOrUpdateDto entity)
+        public async Task<CategoryDto> UpdateAsync(string guid, CategoryAddOrUpdateDto entity)
         {
-            var dbCategory = await _categories.GetByGuidAsync(guid);
-            if (dbCategory != null)
-            {
-                dbCategory.Description = entity.Description;
-                dbCategory.Name = entity.Name;
-                return await _categories.UpdateAsync(dbCategory);
-            }
-            return 0;
+            if (string.IsNullOrWhiteSpace(guid))
+                throw new ArgumentException("GUID cannot be null or empty.", nameof(guid));
+
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+            
+            var dbCategory = await _categories.GetByGuidAsync(guid)
+                ?? throw new InvalidOperationException($"Category with GUID {guid} not found.");
+
+            dbCategory.Name = entity.Name;
+            dbCategory.Description = entity.Description;
+            
+            var updatedCategory = await _categories.UpdateAsync(dbCategory);
+
+            return updatedCategory.ToCategoryDto();
         }
     }
 }
